@@ -1,11 +1,9 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import pageSlice from "../features/pages/pageSlice";
-import modalSlice from "../features/modal/modalSlice";
 
 export const store = configureStore({
   reducer: {
     page: pageSlice,
-    modal: modalSlice,
   },
 });
 

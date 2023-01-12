@@ -8,8 +8,10 @@ export const Filter = () => {
   const [searchParams, setSearchParams] = useSearchParams({ id: "" });
   const handleChange = (event: React.ChangeEvent<HTMLElement>) => {
     const target = event.target as HTMLButtonElement;
-    if (Number(target.value) > -1) {
+    if (target.value.match(/\d/g)) {
       setSearchParams({ id: target.value });
+    } else {
+      setSearchParams({});
     }
   };
   return (
