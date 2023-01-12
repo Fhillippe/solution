@@ -37,14 +37,7 @@ export const loadPage = createAsyncThunk(
 export const pageSlice = createSlice({
   name: "page",
   initialState,
-  reducers: {
-    shiftLeft: (state) => {
-      state.pageNumber -= 1;
-    },
-    shiftRight: (state) => {
-      state.pageNumber += 1;
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(loadPage.pending, (state) => {
@@ -54,7 +47,7 @@ export const pageSlice = createSlice({
       .addCase(loadPage.fulfilled, (state, action) => {
         state.pageLoading = false;
         state.pageError = false;
-        state.totalPages = action.payload.total_pages || 1;
+        state.totalPages = action.payload.total_pages;
         state.currentPage = [action.payload.data].flat();
       })
       .addCase(loadPage.rejected, (state, action) => {
@@ -64,5 +57,4 @@ export const pageSlice = createSlice({
   },
 });
 
-export const { shiftLeft, shiftRight } = pageSlice.actions;
 export default pageSlice.reducer;

@@ -1,50 +1,28 @@
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { PaginationItem } from "@mui/material";
+import Paginator from "@mui/material/Pagination";
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
-import { loadPage, shiftLeft, shiftRight } from "../pages/pageSlice";
 
 const Pagination = () => {
-  const dispatch = useAppDispatch();
-  const totalPages = useAppSelector(
-    (state: RootState) => state.page.totalPages
-  );
-  const pageNumber = useAppSelector(
-    (state: RootState) => state.page.pageNumber
-  );
-  const leftDisabled = pageNumber === 1 ? true : false;
-  const rightDisabled = pageNumber === totalPages ? true : false;
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    const target = event.target as HTMLButtonElement;
-    const left = target.classList.contains("left");
-    let newPage = pageNumber;
-    if (left) {
-      dispatch(shiftLeft());
-      newPage--;
-    } else {
-      dispatch(shiftRight());
-      newPage++;
-    }
-    dispatch(loadPage([`page=${newPage}`, "per_page=5"]));
+  const params = useParams();
+  const totalPages = useAppSelector((state: RootState) => {
+    return state.page.totalPages;
+  });
+  const [page, setPage] = useState(Number(params.number));
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
   };
   return (
-    <div className="pagination">
-      <button
-        className="left Arrow"
-        onClick={handleClick}
-        disabled={leftDisabled}
-      >
-        Left arrow
-      </button>
-      <button
-        className="right Arrow"
-        onClick={handleClick}
-        disabled={rightDisabled}
-      >
-        Right arrow
-      </button>
-      <span>
-        page: {pageNumber} out of {totalPages}
-      </span>
-    </div>
+    <Paginator
+      count={totalPages}
+      page={page}
+      onChange={handleChange}
+      renderItem={(item) => (
+        <PaginationItem component={Link} to={`/page/${item.page}`} {...item} />
+      )}
+    />
   );
 };
 

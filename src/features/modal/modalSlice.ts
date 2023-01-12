@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ColorInterface } from "../color/color";
+
+export interface ColorInterface {
+  id: number;
+  name: string;
+  year: string;
+  color: string;
+  pantone_value: string;
+}
 
 interface ModalState {
   display: boolean;
@@ -12,7 +19,7 @@ const initialState: ModalState = {
     name: "",
     year: "",
     color: "",
-    pantoneValue: "",
+    pantone_value: "",
   },
 };
 
@@ -22,9 +29,11 @@ export const modalSlice = createSlice({
   reducers: {
     displayModal: (state) => {
       state.display = true;
+      const toBlur = document.querySelector(".page");
     },
     hideModal: (state) => {
       state.display = false;
+      document.querySelector(".App")?.classList.remove("blur");
     },
     setModal: (state, action: PayloadAction<ColorInterface>) => {
       state.currentModal = action.payload;

@@ -1,7 +1,8 @@
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { RootState } from "../../app/store";
 import { hideModal } from "./modalSlice";
 
-export const Modal = (props: any) => {
+const Modal = () => {
   const dispatch = useAppDispatch();
   const handleClick = () => {
     dispatch(hideModal());
@@ -11,14 +12,16 @@ export const Modal = (props: any) => {
     });
   };
 
-  const { color } = props;
+  const color = useAppSelector((state: RootState) => {
+    return state.modal.currentModal;
+  });
   return (
     <div className="modal" style={{ backgroundColor: color.color }}>
       <p>{color.id}</p>
       <p>{color.name}</p>
       <p>{color.year}</p>
       <p>{color.color}</p>
-      <p>{color.pantoneValue}</p>
+      <p>{color.pantone_value}</p>
       <button onClick={handleClick}>x</button>
     </div>
   );
